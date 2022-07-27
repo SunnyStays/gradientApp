@@ -1,0 +1,46 @@
+:root {
+    --charcoal: #424242;
+    --main: #ffffff;
+    --dark: #202020;
+}
+
+body, html {
+    background-color: var(--dark);
+    color: var(--main)
+}
+
+.input {
+    background-color: var(--charcoal);
+    color: var(--main);
+    border: none;
+    border-radius: 5px;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    margin: 50px 0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.gradient-box {
+    border: solid black 0px;
+    margin: 0px 0px;
+    height: 300px;
+    flex: 1 1 0px;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width:100%;
+    padding: 10px 25px;
+    background-color: var(--dark);
+    word-spacing: 25px;
+}
+
+a, a:hover, a:active, a:focus, a:visited {
+    color: white;
+    cursor: pointer;
+}
