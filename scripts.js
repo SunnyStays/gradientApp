@@ -1,14 +1,14 @@
 function colorChannelMix(colorChannelA, colorChannelB, mixValue){
-    let channelA = colorChannelA*mixValue
-    let channelB = colorChannelB*(1-mixValue)
+    const channelA = colorChannelA*mixValue
+    const channelB = colorChannelB*(1-mixValue)
 
     return parseInt(channelA+channelB)
 }
 
 function colorMix(rgbA, rgbB, mixValue){
-    let r = colorChannelMix(rgbA[0],rgbB[0],mixValue)
-    let g = colorChannelMix(rgbA[1],rgbB[1],mixValue)
-    let b = colorChannelMix(rgbA[2],rgbB[2],mixValue)
+    const r = colorChannelMix(rgbA[0],rgbB[0],mixValue)
+    const g = colorChannelMix(rgbA[1],rgbB[1],mixValue)
+    const b = colorChannelMix(rgbA[2],rgbB[2],mixValue)
 
     return "rgb("+r+","+g+","+b+")"
 }
@@ -20,11 +20,18 @@ function returnColor(color) {
     return [r,g,b]
 }
 
-function generateGradient(){
-    var colorOne = $("#colorOne").val()
-    var colorTwo = $("#colorTwo").val()
+function contrastColor(color) {
+    rgb = returnColor(color)
+    return (rgb[0] * 0.299 + rgb[1] * 0.587 + rgb[2] * 0.114) > 186
+            ? 'rgb(0,0,0)'
+            : 'rgb(255,255,255)';
+}
 
-    var childrenCount = document.getElementById("gradient-container").childElementCount
+function generateGradient(){
+    const colorOne = $("#colorOne").val()
+    const colorTwo = $("#colorTwo").val()
+
+    const childrenCount = document.getElementById("gradient-container").childElementCount
 
     for (let i = 0; i<=childrenCount;i++){
 
@@ -33,13 +40,11 @@ function generateGradient(){
         let backgroundColor = colorMix(returnColor(colorOne),returnColor(colorTwo),mixValue)
 
         $(gradientId).css("background-color",backgroundColor)
-
-        
     }
 }
 
 function addGradientBox(){
-    let childrenCount = document.getElementById("gradient-container").childElementCount
+    const childrenCount = document.getElementById("gradient-container").childElementCount
     if (childrenCount<64){
         let gradientBox = "<div class='gradient-box' id='gradient"+parseInt(childrenCount+1)+"' ></div>"
 
@@ -57,16 +62,15 @@ function removeGradientBox(){
     generateGradient()
 }
 
-
 const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
 
 generateGradient()
 
 $(document).on("click",'.gradient-box',function() {  
-    //alert(rgb2hex($(this).css("background-color")))
-    //alert(this.id)
-    $("#color-text").text("This color is "+rgb2hex($(this).css("background-color"))).css("background-color",$(this).css("background-color"))
+    let bgColor = rgb2hex($(this).css("background-color"))
+    $("#color-text").text("This color is "+bgColor).css("background-color",$(this).css("background-color"))
+    $("#color-text").css("color",contrastColor(bgColor))
 });
 
-colorOne.addEventListener("change", generateGradient, false);
-colorTwo.addEventListener("change", generateGradient, false);
+colorOne.addEventListener("change", generateGradient);
+colorTwo.addEventListener("change", generateGradient);
